@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Udupi Panchanga</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b1a2f">
+
+<style>
+
+body{
+margin:0;
+font-family:-apple-system,BlinkMacSystemFont;
+background:#0b1a2f;
+color:gold;
+text-align:center;
+}
+
+.header{
+padding:20px;
+}
+
+.time{
+font-size:36px;
+font-weight:bold;
+}
+
+.date{
+font-size:16px;
+}
+
+.wheel{
+width:280px;
+height:280px;
+margin:25px auto;
+border-radius:50%;
+border:4px solid gold;
+display:flex;
+align-items:center;
+justify-content:center;
+position:relative;
+animation:spin 40s linear infinite;
+}
+
+@keyframes spin{
+from{transform:rotate(0deg)}
+to{transform:rotate(360deg)}
+}
+
+.center-text{
+font-size:20px;
+font-weight:bold;
+animation:none;
+}
+
+.card{
+background:#13294b;
+margin:10px 20px;
+padding:12px;
+border-radius:10px;
+}
+
+.quote{
+margin:20px;
+font-style:italic;
+color:#f5d76e;
+}
+
+.festival{
+background:#8b0000;
+color:white;
+padding:10px;
+margin:15px;
+border-radius:8px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<div class="time" id="clock"></div>
+<div class="date" id="todayDate"></div>
+</div>
+
+<div class="wheel">
+<div class="center-text">
+
+ಕೃಷ್ಣ ಪಕ್ಷ<br>
+ಅಷ್ಟಮಿ<br>
+ಶ್ರಾವಣ ಮಾಸ
+
+</div>
+</div>
+
+<div class="festival">
+🌺 ಶ್ರೀ ಕೃಷ್ಣ ಜನ್ಮಾಷ್ಟಮಿ
+</div>
+
+<div class="card">ತಿಥಿ: <span id="tithi">ಅಷ್ಟಮಿ</span></div>
+
+<div class="card">ನಕ್ಷತ್ರ: <span id="nakshatra">ರೋಹಿಣಿ</span></div>
+
+<div class="card">ರಾಹುಕಾಲ: <span id="rahukala"></span></div>
+
+<div class="card">ಸೂರ್ಯೋದಯ: <span id="sunrise"></span></div>
+
+<div class="card">ಸೂರ್ಯಾಸ್ತ: <span id="sunset"></span></div>
+
+<div class="quote">
+🌿 "ಧರ್ಮೋ ರಕ್ಷತಿ ರಕ್ಷಿತಃ"
+</div>
+
+<script>
+
+function updateClock(){
+
+const now = new Date()
+
+document.getElementById("clock").innerHTML =
+now.toLocaleTimeString("en-IN")
+
+document.getElementById("todayDate").innerHTML =
+now.toLocaleDateString("kn-IN",{weekday:'long',year:'numeric',month:'long',day:'numeric'})
+
+}
+
+setInterval(updateClock,1000)
+
+updateClock()
+
+
+
+function rahukala(){
+
+const day = new Date().getDay()
+
+const rahu = [
+
+"16:30 – 18:00",
+"07:30 – 09:00",
+"15:00 – 16:30",
+"12:00 – 13:30",
+"13:30 – 15:00",
+"10:30 – 12:00",
+"09:00 – 10:30"
+
+]
+
+document.getElementById("rahukala").innerText = rahu[day]
+
+}
+
+rahukala()
+
+
+
+async function sun(){
+
+const url="https://api.sunrise-sunset.org/json?lat=13.3409&lng=74.7421&formatted=0"
+
+const res=await fetch(url)
+
+const data=await res.json()
+
+const sunrise=new Date(data.results.sunrise)
+
+const sunset=new Date(data.results.sunset)
+
+document.getElementById("sunrise").innerHTML =
+sunrise.toLocaleTimeString("en-IN")
+
+document.getElementById("sunset").innerHTML =
+sunset.toLocaleTimeString("en-IN")
+
+}
+
+sun()
+
+</script>
+
+</body>
+</html>
